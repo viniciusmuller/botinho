@@ -19,7 +19,7 @@ class LockedBot(commands.Bot):
         self._lock_debug = lock_debug
         self.add_check(_lock_check)
         self.before_invoke(_lock_user)
-        self.after_invoke(_remove_user)
+        self.after_invoke(_release_user)
 
 
 async def _lock_user(ctx):
@@ -32,7 +32,7 @@ async def _lock_user(ctx):
         )
 
 
-async def _remove_user(ctx):
+async def _release_user(ctx):
     ctx.bot._lock.remove(ctx.author.id)
     if ctx.bot._lock_debug:
         print(
