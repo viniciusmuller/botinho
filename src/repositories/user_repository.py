@@ -21,9 +21,9 @@ class UserRepository(IRepository):
             result = await conn.fetchrow(
                 """
                 SELECT discord_id,
-                    balance,
-                    last_hourly_bonus,
-                    last_daily_bonus
+                       balance,
+                       last_hourly_bonus,
+                       last_daily_bonus
                 FROM users
                 WHERE discord_id = $1
                 """,

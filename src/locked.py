@@ -12,25 +12,39 @@ class LockedBot(commands.Bot):
     """
     _lock = set()
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, lock_debug=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        # TODO use logger
+        self._lock_debug = lock_debug
         self.add_check(_lock_check)
+        self.before_invoke(_lock_user)
         self.after_invoke(_remove_user)
+
+
+async def _lock_user(ctx):
+    ctx.bot._lock.add(ctx.author.id)
+
+    if ctx.bot._lock_debug:
+        print(
+            f'{ctx.author} locked after casting '
+            f'{ctx.command.name}. lock: {ctx.bot._lock}'
+        )
 
 
 async def _remove_user(ctx):
     ctx.bot._lock.remove(ctx.author.id)
-    print(f'lock released from {ctx.author} after {ctx.command.name}. lock: {ctx.bot._lock}')
+    if ctx.bot._lock_debug:
+        print(
+            f'lock released from {ctx.author} after '
+            f'{ctx.command.name}. lock: {ctx.bot._lock}'
+        )
 
 
 async def _lock_check(ctx):
     flag = ctx.author.id not in ctx.bot._lock
 
-    if flag:
-        ctx.bot._lock.add(ctx.author.id)
-        print(f'{ctx.author} locked after casting {ctx.command.name}. lock: {ctx.bot._lock}')
-    else:
+    if not flag and ctx.bot._lock_debug:
         print(f'command from {ctx.author} was blocked by the lock.')
 
     return flag

@@ -14,7 +14,7 @@ from secrets import DATABASE_URL
 from locked import LockedBot
 
 
-class Apostador(LockedBot):
+class Botinho(LockedBot):
     """
     """
     def __init__(self, cogs: typing.List[commands.Cog], *args, **kwargs):
@@ -40,6 +40,6 @@ class Apostador(LockedBot):
 
     @tasks.loop(seconds=60.0)
     async def rotate_status(self):
-        pesos = ['status1', 'status2', 'status3', 'status4']
-        pesado = random.choice(pesos)
-        await self.change_presence(activity=discord.Game(name=pesado))
+        messages = ['status1', 'status2', 'status3', 'status4']
+        selected_message = random.choice(messages)
+        await self.change_presence(activity=discord.Game(name=selected_message))
