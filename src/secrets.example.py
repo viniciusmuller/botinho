@@ -1,3 +1,5 @@
-# Place your token and db url here and rename this file to secrets.py
+# A postgres database url
+# postgresql://[user[:password]@][netloc][:port][/dbname]
 DATABASE_URL=""
+# Your discord bot token
 TOKEN=""
